@@ -67,6 +67,7 @@ export const StyledInputContainer = styled.label<InputLabelProps>`
   padding-right: 1.6rem;
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
   align-items: center;
   padding-bottom: 1.7rem;
   border-bottom: ${(props) =>
@@ -87,15 +88,13 @@ export const StyledAuthInput = styled.input`
   font-family: "Outfit Light";
   font-size: 1.5rem;
   caret-color: var(--color-red);
-  /* border: 2px solid red; */
   flex-grow: 1;
 `;
 
 export const StyledAuthInputError = styled.p`
   font-family: "Outfit Light";
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: var(--color-red);
-  /* border: 2px solid blue; */
 `;
 
 export const StyledAuthButton = styled.button`
@@ -118,7 +117,7 @@ export const StyledAuthButton = styled.button`
   }
 `;
 
-export const StyledAuthTextContainer = styled.p`
+export const StyledAuthTextContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 0.6rem;

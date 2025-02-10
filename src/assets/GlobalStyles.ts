@@ -27,5 +27,16 @@ export const GlobalStyles = createGlobalStyle`
   }
   body {
     background-color: var(--color-black);
+    
   }
+  #root {
+    display: flex;
+    /* overflow: hidden; */
+  }
+  @media(max-width:1100px) {
+    #root {
+      display: block;
+    }
+  }
+  
 `;
