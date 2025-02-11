@@ -16,23 +16,35 @@ export const StyledAuthPageMainInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8.3rem;
   max-width: 40rem;
   width: 100%;
   height: fit-content;
   @media (max-width: 1100px) {
     margin-top: 8rem;
-    gap: 7.2rem;
     max-width: 40rem;
   }
   @media (max-width: 640px) {
-    gap: 5.9rem;
     margin-top: 4.8rem;
     max-width: 32.7rem;
   }
 `;
 
-export const StyledAuthHeaderIcon = styled.img``;
+export const StyledAuthHeaderIcon = styled.img`
+  margin-bottom: 8.3rem;
+  @media (max-width: 1100px) {
+    margin-bottom: 7.2rem;
+  }
+  @media (max-width: 640px) {
+    margin-bottom: 5.9rem;
+  }
+`;
+
+export const StyledAuthMessage = styled.p`
+  font-family: "Outfit Light";
+  font-size: 2rem;
+  color: var(--color-red);
+  margin-bottom: 0.5rem;
+`;
 
 export const StyledAuthDetailsMainContainer = styled.form`
   width: 100%;

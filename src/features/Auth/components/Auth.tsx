@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -9,6 +8,7 @@ import {
   StyledAuthInput,
   StyledAuthInputError,
   StyledAuthInputsContainer,
+  StyledAuthMessage,
   StyledAuthPageMainInnerContainer,
   StyledAuthPageMainOuterContainer,
   StyledAuthTextContainer,
@@ -17,6 +17,8 @@ import {
   StyledAuthTypeColored,
   StyledInputContainer,
 } from "./Auth.styles";
+import { useMutation } from "@tanstack/react-query";
+import supabase from "../../../supabase/supabaseClient";
 
 // Our form data type; repeatPassword is optional because it’s only needed for sign up
 type AuthFormInputs = {
@@ -25,10 +27,48 @@ type AuthFormInputs = {
   repeatPassword?: string;
 };
 
-export default function Auth() {
+type AuthProps = {
+  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function Auth({ setIsAuth }: AuthProps) {
   // Get location and navigation hooks from react-router-dom.
   const location = useLocation();
   const navigate = useNavigate();
+  const loginMutation = useMutation({
+    mutationFn: async function (data: AuthFormInputs) {
+      const { data: result, error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+      if (error) throw error;
+      return result;
+    },
+    onSuccess: () => {
+      setIsAuth(true);
+      navigate("/");
+    },
+  });
+  const signupMutation = useMutation({
+    mutationFn: async function (data: AuthFormInputs) {
+      const { data: result, error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+      });
+      if (error) throw error;
+      return result;
+    },
+    onSuccess: () => {
+      setIsAuth(true);
+    },
+  });
+  function onSubmit(data: AuthFormInputs) {
+    if (hasAccount) {
+      loginMutation.mutate(data);
+    } else {
+      signupMutation.mutate(data);
+    }
+  }
 
   // Derive hasAccount from the current pathname:
   // If the pathname is "/log-in", then hasAccount is true; if "/sign-up", then false.
@@ -38,7 +78,6 @@ export default function Auth() {
     register,
     formState: { errors },
     handleSubmit,
-    control,
     watch,
     unregister,
   } = useForm<AuthFormInputs>();
@@ -53,16 +92,40 @@ export default function Auth() {
   // Watch the password field so that we can validate repeatPassword when in sign-up mode.
   const watchedPassword = watch("password");
 
-  function onSubmit(data: AuthFormInputs) {
-    console.log("Form data:", data);
-  }
-
   return (
     <StyledAuthPageMainOuterContainer>
       <StyledAuthPageMainInnerContainer>
         <StyledAuthHeaderIcon src="/images/logo.svg" alt="Logo" />
-        <StyledAuthDetailsMainContainer>
-          <StyledAuthType>{hasAccount ? "Login" : "Sign Up"}</StyledAuthType>
+        {hasAccount ? (
+          <>
+            {loginMutation.isPending && (
+              <StyledAuthMessage>Processing login...</StyledAuthMessage>
+            )}
+            {loginMutation.isError && (
+              <StyledAuthMessage>
+                {loginMutation.error?.message}. Try Signing up first
+              </StyledAuthMessage>
+            )}
+          </>
+        ) : (
+          <>
+            {signupMutation.isPending && (
+              <StyledAuthMessage>Processing sign up...</StyledAuthMessage>
+            )}
+            {signupMutation.isError && (
+              <StyledAuthMessage>
+                {signupMutation.error?.message}.
+              </StyledAuthMessage>
+            )}
+            {signupMutation.isSuccess && (
+              <StyledAuthMessage>
+                Check your email for confirmation
+              </StyledAuthMessage>
+            )}
+          </>
+        )}
+        <StyledAuthDetailsMainContainer onSubmit={handleSubmit(onSubmit)}>
+          a<StyledAuthType>{hasAccount ? "Login" : "Sign Up"}</StyledAuthType>
           <StyledAuthInputsContainer>
             {/* Email Field */}
             <StyledInputContainer error={!!errors.email} htmlFor="email">
@@ -136,12 +199,10 @@ export default function Auth() {
               </StyledInputContainer>
             )}
           </StyledAuthInputsContainer>
-
           {/* Submit Button */}
-          <StyledAuthButton type="button" onClick={handleSubmit(onSubmit)}>
+          <StyledAuthButton type="submit">
             {hasAccount ? "Login to your account" : "Create an account"}
           </StyledAuthButton>
-
           {/* Toggle between Login and Sign Up */}
           <StyledAuthTextContainer>
             <StyledAuthTextQuestion>
@@ -158,9 +219,7 @@ export default function Auth() {
               {hasAccount ? "Sign Up" : "Login"}
             </StyledAuthTypeColored>
           </StyledAuthTextContainer>
-
-          {/* React Hook Form DevTool for debugging */}
-          <DevTool control={control} />
+          {/* React Hook Form DevTool for debugging */}{" "}
         </StyledAuthDetailsMainContainer>
       </StyledAuthPageMainInnerContainer>
     </StyledAuthPageMainOuterContainer>
