@@ -48,7 +48,6 @@ export default function PostersContainer({
       <PostersContainerHeader>{header}</PostersContainerHeader>
       <PostersListContainer>
         {data.results.map((element: RecommendedMoviesProps) => {
-          
           return (
             <Poster
               key={element.id}

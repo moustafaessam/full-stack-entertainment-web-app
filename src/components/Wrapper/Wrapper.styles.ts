@@ -6,9 +6,9 @@ export const StyledWrapper = styled.div`
   width: 100%;
   @media (max-width: 1100px) {
     max-width: 100%;
-    margin-left: 2.5rem;
+    /* margin-left: 2.5rem; */
   }
   @media (max-width: 640px) {
-    margin-left: 1.6rem;
+    /* margin-left: 1.6rem; */
   }
 `;

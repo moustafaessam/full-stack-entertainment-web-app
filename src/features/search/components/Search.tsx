@@ -33,7 +33,11 @@ export default function Search() {
     <>
       <StyledSearchMainContainer>
         <StyledSearchIcon src="/images/icon-search.svg" />
-        <form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <StyledSearchInput
             placeholder="Search"
             {...register(`${searchRegister()}`)}

@@ -5,20 +5,12 @@ import {
 
 type BookMarkProps = {
   isBookmarked: boolean;
-  setIsBookmarked: React.Dispatch<React.SetStateAction<boolean>>;
   styles?: React.CSSProperties;
 };
 
-export default function Bookmark({
-  isBookmarked,
-  setIsBookmarked,
-  styles,
-}: BookMarkProps) {
-  function handleClick() {
-    setIsBookmarked((pre) => !pre);
-  }
+export default function Bookmark({ isBookmarked, styles }: BookMarkProps) {
   return (
-    <StyledBookMarkContainer onClick={handleClick} style={styles}>
+    <StyledBookMarkContainer style={styles}>
       <StyledTrendingBookMark
         src={`/images/icon-bookmark-${isBookmarked ? "full" : "empty"}.svg`}
       />

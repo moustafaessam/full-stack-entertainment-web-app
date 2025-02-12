@@ -40,6 +40,7 @@ export default function Trending() {
             vote_average: element.vote_average,
             backdrop_path: element.backdrop_path,
             release_date: element.release_date,
+            id: element.id,
           }}
         />
       ))}

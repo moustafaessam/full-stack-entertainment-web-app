@@ -2,16 +2,16 @@ import styled from "styled-components";
 
 export const PostersContainerMainContainer = styled.section`
   margin-top: 3rem;
-  margin-right: 3.6rem;
+  /* margin-right: 3.6rem; */
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
   @media (max-width: 1100px) {
-    margin-right: 2.4rem;
+    /* margin-right: 2.4rem; */
     gap: 2.4rem;
   }
   @media (max-width: 640px) {
-    margin-right: 1.6rem;
+    /* margin-right: 1.6rem; */
     margin-top: 2.4rem;
   }
 `;

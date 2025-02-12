@@ -15,6 +15,7 @@ export default function Nav() {
         <StyledNavIconsContainer>
           <NavIcons />
         </StyledNavIconsContainer>
+
         <StyledAvatarImg src="/images/image-avatar.png" />
       </StyledNavMainInnerContainer>
     </StyledNavMainContainer>

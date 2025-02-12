@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   PosterDetailCircle,
   PosterDetailsContainer,
@@ -12,7 +12,12 @@ import {
   PosterTypeImage,
   StyledPosterCard,
 } from "./PosterCard.styles";
-import Bookmark from "../Bookmark/Bookmark";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import supabase from "../../supabase/supabaseClient";
+import {
+  StyledBookMarkContainer,
+  StyledTrendingBookMark,
+} from "../Bookmark/Bookmark.styles";
 
 type PosterCardProps = {
   sizes?: {
@@ -29,6 +34,7 @@ type PosterCardProps = {
     vote_average: string;
     backdrop_path: string;
     release_date: string;
+    id: string;
   };
 };
 
@@ -39,6 +45,108 @@ export default function PosterCard({ sizes, info }: PosterCardProps) {
   const releaseDate = info.release_date
     ? info.release_date.split("-")[0]
     : ["N/A"];
+
+  function handleClick() {
+    setIsBookmarked((pre) => !pre);
+    if (isBookmarked === false) {
+      addBookmarkMutation.mutate({ info });
+    } else {
+      removeBookmarkMutation.mutate({ info });
+    }
+  }
+
+  const { data } = useQuery({
+    queryKey: ["getbookmarks"],
+    queryFn: async () => {
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
+
+      const currentUserId = sessionData?.session?.user.id;
+      if (!currentUserId) {
+        throw new Error("No authenticated user found.");
+      }
+      const { data, error } = await supabase
+        .from("Bookmark")
+        .select("*")
+        .eq("user_id", currentUserId);
+
+      if (error) throw error;
+
+      return data;
+    },
+  });
+
+  useEffect(() => {
+    data?.map((movie) => {
+      if (Number(movie.movie_id) === Number(info.id)) {
+        setIsBookmarked(true);
+      }
+    });
+  }, [setIsBookmarked]);
+
+  const addBookmarkMutation = useMutation({
+    mutationFn: async (data: PosterCardProps) => {
+      // Retrieve the current session from Supabase.
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
+
+      // Extract the current user's ID from the session.
+      const currentUserId = sessionData?.session?.user.id;
+      if (!currentUserId) {
+        throw new Error("No authenticated user found.");
+      }
+
+      // Check if the bookmark already exists for this user and movie.
+      const { data: existingBookmark, error: selectError } = await supabase
+        .from("Bookmark")
+        .select("*")
+        .eq("user_id", currentUserId)
+        .eq("movie_id", data.info.id)
+        .maybeSingle();
+      if (selectError) throw selectError;
+      if (existingBookmark) {
+        return;
+      }
+
+      // Proceed with the insert if no existing bookmark is found.
+      const { data: result, error } = await supabase.from("Bookmark").insert({
+        user_id: currentUserId, // Include the user_id to satisfy RLS policy
+        movie_name: data.info.title || "N/A",
+        movie_id: data.info.id || "N/A",
+        movie_poster: data.info.backdrop_path || "N/A",
+        movie_voting: data.info.vote_average || "N/A",
+        movie_type: data.info.media_type || "N/A",
+        movie_release_date: data.info?.release_date?.split("-")[0] || "N/A",
+      });
+      if (error) throw error;
+      return result;
+    },
+  });
+
+  const removeBookmarkMutation = useMutation({
+    mutationFn: async (data: PosterCardProps) => {
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
+
+      const currentUserId = sessionData?.session?.user.id;
+      if (!currentUserId) {
+        throw new Error("No authenticated user found.");
+      }
+
+      const { data: result, error } = await supabase
+        .from("Bookmark")
+        .delete()
+        .eq("movie_id", data.info.id);
+      if (error) throw error;
+      return result;
+    },
+  });
+
+  console.log(addBookmarkMutation.error?.message);
+  console.log(removeBookmarkMutation.error?.message);
   return (
     <StyledPosterCard
       sizes={sizes}
@@ -46,7 +154,11 @@ export default function PosterCard({ sizes, info }: PosterCardProps) {
       onMouseEnter={() => setShowPlay(true)}
       onMouseLeave={() => setShowPlay(false)}
     >
-      <Bookmark isBookmarked={isBookmarked} setIsBookmarked={setIsBookmarked} />
+      <StyledBookMarkContainer onClick={handleClick}>
+        <StyledTrendingBookMark
+          src={`/images/icon-bookmark-${isBookmarked ? "full" : "empty"}.svg`}
+        />
+      </StyledBookMarkContainer>
       <PosterDetailsContainer>
         <PosterDetailsInnerContainer>
           <PosterDetailsFirstPar>
