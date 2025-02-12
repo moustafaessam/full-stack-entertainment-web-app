@@ -78,7 +78,10 @@ This project is a full-stack entertainment web application that allows users to 
 
    ```bash
    npm run dev
-   **Can View the website live in the link below**
+
+
    ```
+
+**Can View the website live in the link below**
 
 [https://full-stack-entertainment-web.netlify.app/log-in](https://full-stack-entertainment-web.netlify.app/)
