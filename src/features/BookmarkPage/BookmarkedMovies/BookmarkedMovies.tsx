@@ -36,7 +36,7 @@ export default function BookmarkedMovies() {
       );
   return (
     <PostersContainerMainContainer>
-      <PostersContainerHeader>Bookmarked Tv Series</PostersContainerHeader>
+      <PostersContainerHeader>Bookmarked Movies</PostersContainerHeader>
       {Array.isArray(searchedData) && searchedData.length < 1 ? (
         <StyledNoShows>No Bookmarked movies</StyledNoShows>
       ) : (
