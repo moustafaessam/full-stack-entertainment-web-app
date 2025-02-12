@@ -1,50 +1,84 @@
-# React + TypeScript + Vite
+# Full-Stack Entertainment Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This project is a full-stack entertainment web application that allows users to explore movies and TV series. Users can search for content, view trending and recommended titles, and bookmark their favorite movies or TV shows. The application is built with a modern stack including React, Styled Components, React Query, and Supabase for backend services, authentication, and database management.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Authentication:**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+  - Users can sign up and log in using email and password.
+  - A confirmation email is sent during sign-up.
+  - Only authenticated users can access protected routes (e.g., the Home page).
 
-- Configure the top-level `parserOptions` property like this:
+- **Pages:**
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+  - **Home:**  
+    Displays trending content and recommendations for movies and TV series.
+  - **Movies:**  
+    Lists popular movies and includes a search functionality to filter movies.
+  - **TV-Series:**  
+    Shows a list of TV series with search functionality.
+  - **Bookmarks:**  
+    Displays a list of movies and TV series that the user has bookmarked.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- **Search Functionality:**  
+  Each page provides a search feature, allowing users to search for movies or TV series in real-time.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- **Bookmark Persistence:**  
+  Bookmarked items are stored in the Supabase database and are retrieved on page load, ensuring that users see their saved bookmarks even after refreshing the page.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- **Database & Access Control:**
+  - Supabase is used as the backend and database service.
+  - Database tables and logic are created with row-level security (RLS) to ensure that users can only access their own data.
+- **Modern UI and State Management:**
+  - **Styled Components** are used for component-level styling.
+  - **React Query** handles data fetching, caching, and asynchronous mutations efficiently.
+
+## Technologies Used
+
+- **React:** A JavaScript library for building user interfaces.
+- **Styled Components:** For writing CSS in JavaScript and styling components.
+- **React Query:** For data fetching, caching, and state management of asynchronous requests.
+- **Supabase:** Provides backend-as-a-service with PostgreSQL, authentication, real-time data, and more.
+- **PostgreSQL:** The relational database used by Supabase.
+- **React Router:** For routing and navigation between different pages.
+
+## Project Structure
+
+- **Authentication:**  
+  A dedicated authentication page allows users to sign up or log in. Upon signing up, a confirmation email is sent, and users are redirected to the Home page after a successful login.
+
+- **Home Page:**  
+  Shows a list of trending and recommended movies/TV series. It also includes a search bar to filter content.
+
+- **Movies and TV-Series Pages:**  
+  Separate pages display lists of movies or TV series with individual search functionality.
+
+- **Bookmarks Page:**  
+  Users can bookmark movies or TV series they like, and these bookmarks persist in the database and are displayed on a dedicated bookmarks page.
+
+## Installation and Setup
+
+1. **Clone the Repository:**
+
+   ```bash
+   git clone <repository-url>
+   cd <repository-folder>
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Run the website on your device**
+
+   ```bash
+   npm run dev
+   **Can View the website live in the link below**
+   ```
+
+[https://full-stack-entertainment-web.netlify.app/log-in](https://full-stack-entertainment-web.netlify.app/)
