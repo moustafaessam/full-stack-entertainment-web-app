@@ -31,7 +31,7 @@ type PosterProps = {
     backdrop_path: string;
     release_date: string;
     name: string;
-    first_air_date: string;
+    first_air_date?: string;
   };
 };
 
@@ -198,7 +198,7 @@ export default function Poster({ info }: PosterProps) {
                 : `/images/icon-category-tv.svg`
             }
           />
-          {mediaType}
+          {info.media_type || mediaType}
         </PosterListDetailsTextFirstParg>
         <PosterDetailsFirstPargSeprator />
         <PosterListDetailsTextFirstParg>

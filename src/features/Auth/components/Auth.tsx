@@ -219,7 +219,6 @@ export default function Auth({ setIsAuth }: AuthProps) {
               {hasAccount ? "Sign Up" : "Login"}
             </StyledAuthTypeColored>
           </StyledAuthTextContainer>
-          {/* React Hook Form DevTool for debugging */}{" "}
         </StyledAuthDetailsMainContainer>
       </StyledAuthPageMainInnerContainer>
     </StyledAuthPageMainOuterContainer>

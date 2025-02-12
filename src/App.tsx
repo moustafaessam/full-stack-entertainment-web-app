@@ -4,7 +4,6 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import Loading from "./components/Loading/Loading";
 import { FormProvider, useForm } from "react-hook-form";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const Bookmark = lazy(() => import("./pages/Bookmark/Bookmark"));
 const Tv = lazy(() => import("./pages/Tv/Tv"));
 const Wrapper = lazy(() => import("./components/Wrapper/Wrapper"));
@@ -70,7 +69,6 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

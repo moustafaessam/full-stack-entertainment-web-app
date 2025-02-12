@@ -6,11 +6,10 @@ import {
   StyledSearchMainContainer,
 } from "./Search.styles";
 import { FormInputTypes } from "../../../App";
-import { DevTool } from "@hookform/devtools";
 import { useLocation } from "react-router-dom";
 
 export default function Search() {
-  const { register, control } = useFormContext<FormInputTypes>();
+  const { register } = useFormContext<FormInputTypes>();
   const location = useLocation();
   const pathname = location.pathname.split("/")[1] || "home";
 
@@ -43,7 +42,6 @@ export default function Search() {
             {...register(`${searchRegister()}`)}
             key={location.pathname}
           />
-          <DevTool control={control} />
         </form>
       </StyledSearchMainContainer>
       <StyledSearchDivider />
