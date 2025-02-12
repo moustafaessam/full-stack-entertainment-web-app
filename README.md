@@ -84,4 +84,4 @@ This project is a full-stack entertainment web application that allows users to 
 
 **Can View the website live in the link below**
 
-[https://full-stack-entertainment-web.netlify.app/log-in](https://full-stack-entertainment-web.netlify.app/)
+[https://full-stack-entertainment-web.netlify.app/](https://full-stack-entertainment-web.netlify.app/)
